@@ -7,7 +7,7 @@ export function fetchAllProducts() {
 }
   );
 }
-export function fetchProductsByFilters(filter,sort) {
+export function fetchProductsByFilters(filter,sort,pagination) {
 //filter={"category":"smartphones"}
 let queryString='';
 for(let key in filter){
@@ -21,10 +21,14 @@ for(let key in filter){
 for (let key in sort){
   queryString+=`${key}=${sort[key]}&`
 }
+for (let key in pagination){
+  queryString+=`${key}=${pagination[key]}&`
+}
   return new Promise(async (resolve) =>{
    const response=await fetch('http://localhost:8080/products?'+queryString)
    const data= await response.json()
-   resolve({data})
+   const totalItem= await response.headers.get('X-total-Count')
+   resolve({data:{products:data,totalItem:+totalItem}})
 }
   );
 }
