@@ -35,7 +35,7 @@ const dispatch=useDispatch();
 const params=useParams();
 useEffect(()=>{
   dispatch(fetchAllProductByIdAsync(params.id))
-})
+},[dispatch,params.id])
   return (
     <div className="bg-white">
 
