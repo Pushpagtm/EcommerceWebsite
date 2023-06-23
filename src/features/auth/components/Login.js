@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form";
+import { checkUserAsync } from '../authSlice';
+import { useSelector, useDispatch } from "react-redux";
+import { selectLoggedInUser } from '../authSlice';
 export function Login() {
-  // const count = useSelector(selectCount);
-  // const dispatch = useDispatch(); 
+  // const count = useSelector();
+  const dispatch = useDispatch(); 
+  const user=useSelector(selectLoggedInUser);
   
   const { register, handleSubmit,formState:{errors} } = useForm()
   return (
+    <>
+    {user && <Navigate to='/' replace={true}/>}
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -20,8 +26,10 @@ export function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" onSubmit={handleSubmit((data)=>
-            console.log(data))} >
+          <form className="space-y-6" action="#" onSubmit={handleSubmit((data)=> dispatch(
+                checkUserAsync({ email: data.email, password: data.password })
+              )
+            )} >
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
@@ -90,5 +98,6 @@ export function Login() {
           </p>
         </div>
       </div>
+      </>
   );
 }
