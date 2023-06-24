@@ -1,7 +1,7 @@
 import React, { useState,Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectItems
+  selectItems,updateCartAsync,deleteCartAsync
 } from './cartSlice';
 
 import { Dialog, Transition } from '@headlessui/react'
@@ -40,6 +40,14 @@ export function Cart() {
   const items=useSelector(selectItems)
   const totalAmount=items.reduce((amount,item)=>item.price*item.quantity + amount,0);
   const totalItems=items.reduce((total,item)=>item.quantity+total,0);
+  const handleQuantity=(e,item)=>{
+    dispatch( updateCartAsync({...item,quantity:+e.target.value}))
+
+
+  }
+  const handleDelete=(e,id)=>{
+    dispatch(deleteCartAsync(id));
+  }
   return (
    <>
    <div className="mx-auto bg-white max-w-5xl px-3 sm:px-5 lg:px-7">
@@ -49,12 +57,12 @@ export function Cart() {
               </h1>
                       <div className="flow-root">
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {items.map((product) => (
-                            <li key={product.id} className="flex py-6">
+                          {items.map((item) => (
+                            <li key={item.id} className="flex py-6">
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
-                                  src={product.thumbnail}
-                                  alt={product.imageAlt}
+                                  src={item.thumbnail}
+                                  alt={item.imageAlt}
                                   className="h-full w-full object-cover object-center"
                                 />
                               </div>
@@ -63,26 +71,31 @@ export function Cart() {
                                 <div>
                                   <div className="flex justify-between text-base font-medium text-gray-900">
                                     <h3>
-                                      <a href={product.href}>{product.title}</a>
+                                      <a href={item.href}>{item.title}</a>
                                     </h3>
-                                    <p className="ml-4">${product.price}</p>
+                                    <p className="ml-4">${item.price}</p>
                                   </div>
-                                  <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                                  <p className="mt-1 text-sm text-gray-500">{item.color}</p>
                                 </div>
                                 <div className="flex flex-1  items-end justify-between text-sm">
                                   <div className="text-gray-500">
                                   <label htmlFor="quantity" className="inline mr-5 text-sm font-medium leading-6 text-gray-900">
                   Qty
                 </label>
-                                  <select>
-                                    <option>1</option>
-                                    <option>2</option>
+                                  <select onChange={(e)=>handleQuantity(e,item)} value={item.quantity}>
+                                    <option value='1'>1</option>
+                                    <option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5</option>
+                                    <option value='6'>6</option>
                                   </select>
                                    {/* {product.quantity} */}
                                    </div>
 
                                   <div className="flex">
                                     <button
+                                    onClick={(e)=>handleDelete(e,item.id)}
                                       type="button"
                                       className="font-medium text-indigo-600 hover:text-indigo-500"
                                     >
