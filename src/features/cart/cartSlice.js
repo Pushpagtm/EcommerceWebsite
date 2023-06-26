@@ -45,6 +45,7 @@ export const deleteCartAsync = createAsyncThunk(
   }
 );
 
+
 export const counterSlice = createSlice({
   name: 'cart',
   initialState,

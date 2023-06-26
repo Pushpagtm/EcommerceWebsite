@@ -35,7 +35,7 @@ export function Signup() {
             action="#"
             onSubmit={handleSubmit((data) =>
               dispatch(
-                createUserAsync({ email: data.email, password: data.password })
+                createUserAsync({ email: data.email, password: data.password ,addresses:[]})
               )
             )}
           >
@@ -89,8 +89,8 @@ export function Signup() {
                     required: "Password is required",
                     pattern: {
                       value:
-                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-                      message: `- at least 8 characters\n
+                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{5,}$/gm,
+                      message: `- at least 5 characters\n
                   - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number\n
                   - Can contain special characters`,
                     },

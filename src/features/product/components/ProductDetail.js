@@ -34,7 +34,9 @@ export default function ProductDetail() {
   const user=useSelector(selectLoggedInUser)
   const handleCart=(e)=>{
     e.preventDefault();
-    dispatch(addToCartAsync({...product,quantity:1,user:user.id}))
+    const newItem={...product,quantity:1,user:user.id};
+    delete newItem['id'];
+    dispatch(addToCartAsync(newItem))
   }
 const product=useSelector(selectProductById)
 const dispatch=useDispatch();

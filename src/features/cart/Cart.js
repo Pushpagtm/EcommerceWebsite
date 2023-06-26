@@ -4,34 +4,9 @@ import {
   selectItems,updateCartAsync,deleteCartAsync
 } from './cartSlice';
 
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom';
+import { Link,Navigate } from 'react-router-dom';
 
-// const products = [
-//   {
-//     id: 1,
-//     name: 'Throwback Hip Bag',
-//     href: '#',
-//     color: 'Salmon',
-//     price: '$90.00',
-//     quantity: 1,
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-//     imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-//   },
-//   {
-//     id: 2,
-//     name: 'Medium Stuff Satchel',
-//     href: '#',
-//     color: 'Blue',
-//     price: '$32.00',
-//     quantity: 1,
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-//     imageAlt:
-//       'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-//   },
-//   // More products...
-// ]
+
 
 export function Cart() {
   
@@ -50,6 +25,7 @@ export function Cart() {
   }
   return (
    <>
+   {!items.length && <Navigate to='/' replace={true}/>}
    <div className="mx-auto bg-white max-w-5xl px-3 sm:px-5 lg:px-7">
       <div className="mt-8 border-t border-gray-200 px-4 py-6 sm:px-6">
       <h1 className="text-4xl my-4 font-bold tracking-tight text-gray-900">
