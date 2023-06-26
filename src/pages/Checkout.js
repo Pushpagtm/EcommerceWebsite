@@ -5,6 +5,7 @@ import {
   updateCartAsync,
   deleteCartAsync,
 } from "../../src/features/cart/cartSlice";
+import {createOrderAsync,setCurrentOrderStatus} from '../features/order/orderSlice'; 
 import { Link, Navigate } from "react-router-dom";
 
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -20,9 +21,11 @@ function Checkout(props) {
     formState: { errors },
   } = useForm();
   const user = useSelector(selectLoggedInUser);
+  const items = useSelector(selectItems);
+  const orderPlaced=useSelector(setCurrentOrderStatus);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
-  const items = useSelector(selectItems);
+
   const[paymentMethod,setPaymentMethod]=useState('');
   const totalAmount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,
@@ -38,9 +41,14 @@ function Checkout(props) {
   const handlePayment=(e)=>{
 setPaymentMethod(e.target.value);
   }
+  const handleorder=()=>{
+    const order={items,totalAmount,user,paymentMethod,status:'pending'}
+    dispatch(createOrderAsync(order))
+  }
   return (
     <>
       {!items.length && <Navigate to="/" replace={true} />}
+      {orderPlaced && <Navigate to='/order-success/' replace={true}/>}
       <div className="mx-auto max-w-7xl px-4  sm:px-6 lg:px-8">
         <div className="grid p-5 grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
@@ -400,7 +408,8 @@ setPaymentMethod(e.target.value);
                 </p>
                 <div className="mt-6">
                   <div
-                    className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                  onClick={handleorder}
+                    className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
                     Order now
                   </div>
