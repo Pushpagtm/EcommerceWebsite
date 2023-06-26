@@ -23,6 +23,7 @@ function Checkout(props) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
   const items = useSelector(selectItems);
+  const[paymentMethod,setPaymentMethod]=useState('');
   const totalAmount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,
     0
@@ -34,6 +35,9 @@ function Checkout(props) {
   const handleDelete = (e, id) => {
     dispatch(deleteCartAsync(id));
   };
+  const handlePayment=(e)=>{
+setPaymentMethod(e.target.value);
+  }
   return (
     <>
       {!items.length && <Navigate to="/" replace={true} />}
@@ -275,8 +279,11 @@ function Checkout(props) {
                       <div className="mt-6 space-y-6">
                         <div className="flex items-center gap-x-3">
                           <input
-                            id="payments"
+                            id="cash"
                             name="payments"
+                            value='cash'
+                            onChange={handlePayment}
+                            checked={paymentMethod==="cash"}
                             type="radio"
                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
@@ -289,8 +296,10 @@ function Checkout(props) {
                         </div>
                         <div className="flex items-center gap-x-3">
                           <input
-                            id="payments"
+                            id="card"
                             name="payments"
+                            value='card'
+                            onChange={handlePayment}
                             type="radio"
                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
@@ -390,12 +399,11 @@ function Checkout(props) {
                   Shipping and taxes calculated at checkout.
                 </p>
                 <div className="mt-6">
-                  <Link
-                    to="/checkout"
+                  <div
                     className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
-                    Checkout
-                  </Link>
+                    Order now
+                  </div>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                   <p>
