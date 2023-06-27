@@ -14,6 +14,7 @@ import { selectLoggedInUser } from "./features/auth/authSlice";
 import {fetchCartByUserIdAsync} from './features/cart/cartSlice';
 import ErrorPage from "./pages/404";
 import OrderSucessPage from "./pages/OrderSucessPage";
+import UserOrderPage from "./pages/UserOrderPage";
 
 function App() {
   const dispatch=useDispatch();
@@ -35,6 +36,7 @@ function App() {
           <Route path="/checkout" element={<Protected><Checkout/></Protected>} />
           <Route path="/productdetail/:id" element={<Protected><ProductDetailPage/></Protected>} />
           <Route path="/order-success/:id" element={<OrderSucessPage/>} />
+          <Route path="/orders" element={<UserOrderPage/>} />
           <Route path="*" element={<ErrorPage/>} />
         </Routes>
       </Router>
