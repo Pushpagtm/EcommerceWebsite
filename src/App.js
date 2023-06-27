@@ -34,7 +34,7 @@ function App() {
           <Route path="/cart" element={<Protected><CartPage/></Protected>} />
           <Route path="/checkout" element={<Protected><Checkout/></Protected>} />
           <Route path="/productdetail/:id" element={<Protected><ProductDetailPage/></Protected>} />
-          <Route path="/order-success" element={<OrderSucessPage/>} />
+          <Route path="/order-success/:id" element={<OrderSucessPage/>} />
           <Route path="*" element={<ErrorPage/>} />
         </Routes>
       </Router>

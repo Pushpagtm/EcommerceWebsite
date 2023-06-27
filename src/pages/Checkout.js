@@ -5,7 +5,7 @@ import {
   updateCartAsync,
   deleteCartAsync,
 } from "../../src/features/cart/cartSlice";
-import {createOrderAsync,setCurrentOrderStatus} from '../features/order/orderSlice'; 
+import {createOrderAsync,setCurrentOrder} from '../features/order/orderSlice'; 
 import { Link, Navigate } from "react-router-dom";
 
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -22,7 +22,7 @@ function Checkout(props) {
   } = useForm();
   const user = useSelector(selectLoggedInUser);
   const items = useSelector(selectItems);
-  const orderPlaced=useSelector(setCurrentOrderStatus);
+  const currentOrder=useSelector(setCurrentOrder);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
@@ -48,7 +48,7 @@ setPaymentMethod(e.target.value);
   return (
     <>
       {!items.length && <Navigate to="/" replace={true} />}
-      {orderPlaced && <Navigate to='/order-success/' replace={true}/>}
+      {currentOrder && <Navigate to={`/order-success/${currentOrder}`} replace={true}/>}
       <div className="mx-auto max-w-7xl px-4  sm:px-6 lg:px-8">
         <div className="grid p-5 grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
