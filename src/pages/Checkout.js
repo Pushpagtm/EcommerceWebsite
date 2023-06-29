@@ -13,6 +13,7 @@ import {
   selectLoggedInUser,
   updateUserAsync,
 } from "../features/auth/authSlice";
+import { selectUserInfo } from "../features/user/userSlice";
 function Checkout(props) {
   const {
     register,
@@ -20,7 +21,7 @@ function Checkout(props) {
     reset,
     formState: { errors },
   } = useForm();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectUserInfo);
   const items = useSelector(selectItems);
   const currentOrder=useSelector(setCurrentOrder);
   const dispatch = useDispatch();
@@ -374,7 +375,7 @@ setPaymentMethod(e.target.value);
                                 <option value="5">5</option>
                                 <option value="6">6</option>
                               </select>
-                              {/* {product.quantity} */}
+                             
                             </div>
 
                             <div className="flex">
@@ -434,7 +435,9 @@ setPaymentMethod(e.target.value);
           </div>
         </div>
       </div>
+     
     </>
+   
   );
 }
 
