@@ -5,7 +5,10 @@ import {
   updateCartAsync,
   deleteCartAsync,
 } from "../../src/features/cart/cartSlice";
-import {createOrderAsync,setCurrentOrder} from '../features/order/orderSlice'; 
+import {
+  createOrderAsync,
+  setCurrentOrder,
+} from "../features/order/orderSlice";
 import { Link, Navigate } from "react-router-dom";
 
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -23,11 +26,11 @@ function Checkout(props) {
   } = useForm();
   const user = useSelector(selectUserInfo);
   const items = useSelector(selectItems);
-  const currentOrder=useSelector(setCurrentOrder);
+  const currentOrder = useSelector(setCurrentOrder);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
-  const[paymentMethod,setPaymentMethod]=useState('');
+  const [paymentMethod, setPaymentMethod] = useState("");
   const totalAmount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,
     0
@@ -39,17 +42,25 @@ function Checkout(props) {
   const handleDelete = (e, id) => {
     dispatch(deleteCartAsync(id));
   };
-  const handlePayment=(e)=>{
-setPaymentMethod(e.target.value);
-  }
-  const handleorder=()=>{
-    const order={items,totalAmount,user,paymentMethod,status:'pending'}
-    dispatch(createOrderAsync(order))
-  }
+  const handlePayment = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+  const handleorder = () => {
+    const order = {
+      items,
+      totalAmount,
+      user,
+      paymentMethod,
+      status: "pending",
+    };
+    dispatch(createOrderAsync(order));
+  };
   return (
     <>
       {!items.length && <Navigate to="/" replace={true} />}
-      {currentOrder && <Navigate to={`/order-success/${currentOrder}`} replace={true}/>}
+      {currentOrder && (
+        <Navigate to={`/order-success/${currentOrder}`} replace={true} />
+      )}
       <div className="mx-auto max-w-7xl px-4  sm:px-6 lg:px-8">
         <div className="grid p-5 grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
@@ -238,45 +249,6 @@ setPaymentMethod(e.target.value);
                 </div>
 
                 <div className="border-b border-gray-900/10 pb-12">
-                  <h2 className="text-base font-semibold leading-7 text-gray-900">
-                    Address
-                  </h2>
-                  <p className="mt-1 text-sm leading-6 text-gray-600">
-                    Choose from exisiting address
-                  </p>
-                  <ul role="list">
-                    {user.addresses.map((address) => (
-                      <li className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200">
-                        <div className="flex gap-x-4">
-                          <input
-                            name="address"
-                            type="radio"
-                            className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                          />
-                          <div className="min-w-0 flex-auto">
-                            <p className="text-sm font-semibold leading-6 text-gray-900">
-                              {address.name}
-                            </p>
-                            <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                              {address.street}
-                            </p>
-                            <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                              {address.pinCode}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="hidden sm:flex sm:flex-col sm:items-end">
-                          <p className="text-sm leading-6 text-gray-900">
-                            Phone: {address.phone}
-                          </p>
-                          <p className="text-sm leading-6 text-gray-500">
-                            {address.city}
-                          </p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-
                   <div className="mt-10 space-y-10">
                     <fieldset>
                       <legend className="text-sm font-semibold leading-6 text-gray-900">
@@ -290,9 +262,9 @@ setPaymentMethod(e.target.value);
                           <input
                             id="cash"
                             name="payments"
-                            value='cash'
+                            value="cash"
                             onChange={handlePayment}
-                            checked={paymentMethod==="cash"}
+                            checked={paymentMethod === "cash"}
                             type="radio"
                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
@@ -307,7 +279,7 @@ setPaymentMethod(e.target.value);
                           <input
                             id="card"
                             name="payments"
-                            value='card'
+                            value="card"
                             onChange={handlePayment}
                             type="radio"
                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
@@ -409,7 +381,7 @@ setPaymentMethod(e.target.value);
                 </p>
                 <div className="mt-6">
                   <div
-                  onClick={handleorder}
+                    onClick={handleorder}
                     className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
                     Order now
@@ -435,9 +407,7 @@ setPaymentMethod(e.target.value);
           </div>
         </div>
       </div>
-     
     </>
-   
   );
 }
 
