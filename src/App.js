@@ -15,15 +15,18 @@ import {fetchCartByUserIdAsync} from './features/cart/cartSlice';
 import ErrorPage from "./pages/404";
 import OrderSucessPage from "./pages/OrderSucessPage";
 import UserOrderPage from "./pages/UserOrderPage";
-import { fetchLoggedInUserOrdersAsync } from './features/user/userSlice';
+import { fetchLoggedInUserAsync } from './features/user/userSlice';
 import UserProfilePage from "./pages/UserProfilePage";
+import { fetchLoggedInUser } from "./features/user/userAPI";
+import Logout from "./features/auth/components/Logout";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 function App() {
   const dispatch=useDispatch();
   const user=useSelector(selectLoggedInUser);
   useEffect(()=>{
     if(user){
       dispatch(fetchCartByUserIdAsync(user.id))
-      dispatch(fetchLoggedInUserOrdersAsync(user.id))
+      dispatch(fetchLoggedInUserAsync(user.id))
     }
   },[dispatch,user])
   return (
@@ -40,6 +43,8 @@ function App() {
           <Route path="/order-success/:id" element={<OrderSucessPage/>} />
           <Route path="/orders" element={<UserOrderPage/>} />
           <Route path="/profile" element={<UserProfilePage/>} />
+          <Route path="/logout" element={<Logout/>} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage/>} />
           <Route path="*" element={<ErrorPage/>} />
         </Routes>
       </Router>

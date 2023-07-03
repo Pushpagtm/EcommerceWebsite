@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchLoggedInUserOrdersAsync, selectUserOrders,selectUserInfo } from '../userSlice';
-
-
+import { fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders } from '../userSlice';
 
 export default function UserOrder() {
- 
   const dispatch = useDispatch();
-  const orders=useSelector(selectUserOrders);
+  const orders = useSelector(selectUserOrders);
   const user=useSelector(selectUserInfo);
- useEffect(()=>{
-    dispatch(fetchLoggedInUserOrdersAsync(user.id))
- },[])
+  // const status = useSelector(selectUserInfoStatus);
+
+  useEffect(() => {
+    dispatch(fetchLoggedInUserOrdersAsync(user.id));
+  }, [dispatch]);
 
   
   return (
 
     <div>
     {orders.map((order) => (
-       <div>
+      
 
 <div>
       <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -84,44 +83,17 @@ export default function UserOrder() {
             <p>Total Items in Cart</p>
             <p>{order.totalItems} items</p>
           </div>
-          {/* <p className="mt-0.5 text-sm text-gray-500">
-            Shipping Address :
-          </p>
-          <div
-                  className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200"
-                >
-                  <div className="flex gap-x-4">
-
-                    <div className="min-w-0 flex-auto">
-                      <p className="text-sm font-semibold leading-6 text-gray-900">
-                        {order.selectedAddress.name}
-                      </p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                        {order.selectedAddress.street}
-                      </p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                        {order.selectedAddress.pinCode}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="hidden sm:flex sm:flex-col sm:items-end">
-                    <p className="text-sm leading-6 text-gray-900">
-                      Phone: {order.selectedAddress.phone}
-                    </p>
-                    <p className="text-sm leading-6 text-gray-500">
-                      {order.selectedAddress.city}
-                    </p>
-                  </div>
-                </div> */}
-
+      
         </div>
       </div>
     </div>
 
 
-      </div>
+     
 
     ))}
+   
   </div>
+
   );
 }

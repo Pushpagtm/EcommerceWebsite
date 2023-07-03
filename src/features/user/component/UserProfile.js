@@ -2,12 +2,51 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { selectUserInfo, updateUserAsync } from '../userSlice';
-
+import { useForm } from 'react-hook-form';
 export function UserProfile() {
 
   const dispatch = useDispatch();
  
   const user = useSelector(selectUserInfo);
+  const [selectedEditIndex, setSelectedEditIndex] = useState(-1);
+  const [showAddAddressForm, setShowAddAddressForm] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
+  const handleEdit = (addressUpdate, index) => {
+    const newUser = { ...user, addresses: [...user.addresses] }; // for shallow copy issue
+    newUser.addresses.splice(index, 1, addressUpdate);
+    dispatch(updateUserAsync(newUser));
+    setSelectedEditIndex(-1);
+  };
+  const handleRemove = (e, index) => {
+    const newUser = { ...user, addresses: [...user.addresses] }; // for shallow copy issue
+    newUser.addresses.splice(index, 1);
+    dispatch(updateUserAsync(newUser));
+  };
+
+  const handleEditForm = (index) => {
+    setSelectedEditIndex(index);
+    const address = user.addresses[index];
+    setValue('name', address.name);
+    setValue('email', address.email);
+    setValue('city', address.city);
+    setValue('state', address.state);
+    setValue('pinCode', address.pinCode);
+    setValue('phone', address.phone);
+    setValue('street', address.street);
+  };
+
+  const handleAdd = (address)=>{
+    const newUser = { ...user, addresses: [...user.addresses, address] }; 
+    dispatch(updateUserAsync(newUser));
+    setShowAddAddressForm(false);
+  }
   
   return (
    
@@ -22,14 +61,14 @@ export function UserProfile() {
         </div>
 
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-          {/* <button
+          <button
             onClick={e=>{setShowAddAddressForm(true);setSelectedEditIndex(-1)}}
             type="submit"
             className="rounded-md my-5 bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Add New Address
-          </button> */}
-          {/* {showAddAddressForm ? (
+          </button>
+          {showAddAddressForm ? (
                 <form
                   className="bg-white px-5 py-12 mt-12"
                   noValidate
@@ -231,10 +270,10 @@ export function UserProfile() {
                     </div>
                   </div>
                 </form>
-              ) : null} */}
+              ) : null}
 
           <p className="mt-0.5 text-sm text-gray-500">Your Addresses :</p>
-          {/* {user.addresses.map((address, index) => (
+          {user.addresses.map((address, index) => (
             <div>
               {selectedEditIndex === index ? (
                 <form
@@ -485,7 +524,7 @@ export function UserProfile() {
                 </div>
               </div>
             </div>
-          ))} */}
+          ))}
         </div>
 
     </div>
